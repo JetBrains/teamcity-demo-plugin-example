@@ -1,0 +1,14 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "jest-teamcity": "^1.11.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "test-ci": "jest --reporters=jest-teamcity --reporters=default"
+  }
+}
