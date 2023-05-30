@@ -1,5 +1,6 @@
 import jetbrains.buildServer.configs.kotlin.*
 import jetbrains.buildServer.configs.kotlin.buildSteps.gradle
+import jetbrains.buildServer.configs.kotlin.buildSteps.script
 
 /*
 The settings script is an entry point for defining a TeamCity
@@ -26,7 +27,7 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 version = "2023.05"
 
 project {
-
+    buildType(BuildFrontend)
     buildType(BuildBackend)
 }
 
@@ -42,6 +43,27 @@ object BuildBackend : BuildType({
             name = "Gradle Build"
             tasks = "clean build"
             workingDir = "backend"
+        }
+    }
+})
+
+object BuildFrontend : BuildType({
+    name = "Build Frontend"
+
+    vcs {
+        root(DslContext.settingsRoot)
+    }
+
+    steps {
+        script {
+            workingDir = "frontend"
+            scriptContent = """
+                #!/bin/bash
+                set -e -x
+                
+                yarn install
+                yarn build
+            """.trimIndent()
         }
     }
 })
